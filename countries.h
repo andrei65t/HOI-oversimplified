@@ -99,7 +99,7 @@ class Country
                 return cout;
             }
 };
-
+// test de git
 void transferRegion(Country& tara1, Country& tara2, int id_region){
     tara1.regions.push_back(tara2.regions[id_region]);
     tara2.regions.erase(tara2.regions.begin()+id_region);
