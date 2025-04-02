@@ -7,7 +7,7 @@ using namespace std;
 class Resources{
     int gold,stone,wood,iron;
     public:
-        Resources(int gold, int stone, int wood, int iron){
+        Resources(int gold=0, int stone=0, int wood=0, int iron=0){
             this->gold=gold;
             this->stone=stone;
             this->wood=wood;
@@ -31,7 +31,7 @@ class Region
         int population,soldiers;
         Resources resources;
     public:
-        Region(int ocupant, Resources resources) : resources(resources){
+        Region(int ocupant, Resources resources) {
             id=ocupant;
             population=rand()%5000+10000;
             soldiers=population/(rand()%17+7);
@@ -63,7 +63,7 @@ class Country
 
 
         public:
-            Country(int id, string name, vector<Region> regions) : resources(resources), regions(regions){
+            Country(int id, string name, vector<Region> regions){
                 this->id=id; 
                 this->regions=regions;
                 this->population=0;
