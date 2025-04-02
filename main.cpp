@@ -7,12 +7,12 @@ using namespace sf;
 vector<Region> regions;
 vector<Country> countries;
 string names[4]={"Romania","Bulgaria","Serbia","Ungaria"};
-sf::Color colors[4]={sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color::Yellow};
+Color colors[4]={Color::Red,Color::Green,Color::Blue,Color::Yellow};
 void initializare(){
     srand(time(0));
     for (int i=0;i<4;i++){
         for (int j=0;j<6;j++){
-            regions.push_back(Region(i*6+j,Resources(rand()%1000+100,rand()%1000+100,rand()%1000+100,rand()%1000+100)));
+            regions.push_back(Region(i*6+j,Resources(rand()%1000+100,rand()%1000+100,rand()%1000+100,rand()%1000+100),HexagonShape(colors[i])));
         }
         countries.push_back(Country(i,names[i],regions));
         regions.clear();
@@ -35,8 +35,7 @@ int main() {
             if(event.mouseButton.button==Mouse::Left and !mousePressed){
                 mousePressed = true;
                 for (int i=0;i<4;i++){
-                    
-                    cerr<<"apasat";
+                    countries[i].Regiuni(0);
                 }
             }
         }
@@ -46,6 +45,7 @@ int main() {
             }
         }
     }
+    
         window.clear();
         window.display();
     }

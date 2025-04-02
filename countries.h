@@ -2,6 +2,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <iostream>
+#include "sfmlHex.h"
 using namespace std;
 
 class Resources{
@@ -20,22 +21,23 @@ class Factory{
         int workers;
         public:
         Factory(){
-            power=(rand()%100+1)/100.0;
+            power=(rand()%100+1.2)/100.0;
             workers=rand()%100+10;
         }
 };
-class Region
+class Region : public HexagonShape
 {
     private:
         int id;
         int population,soldiers;
         Resources resources;
+        HexagonShape hexagon;
     public:
-        Region(int ocupant, Resources resources) {
+        Region(int ocupant, Resources resources, HexagonShape hexagon) : HexagonShape(hexagon){
             id=ocupant;
             population=rand()%5000+10000;
             soldiers=population/(rand()%17+7);
-            this->resources=resources; 
+            this->resources=resources;
         }
         int GetPopulation(){
             return population;
@@ -44,12 +46,13 @@ class Region
             return soldiers;
         }
         void afisareRegiune(){
-            cout<<"     Id-ul regiunii "<<id<<" populatie:"<<population<<" soldati:"<<soldiers<<endl;
+            cerr<<"     Id-ul regiunii "<<id<<" populatie:"<<population<<" soldati:"<<soldiers<<endl;
         }
         friend ostream& operator << (ostream& cout, Region& region){
             cout<<"Id-ul tarii "<<region.id<<" populatie:"<<region.population<<" soldati:"<<region.soldiers<<endl;
             return cout;
         }
+        
 };
 
 class Country
@@ -93,7 +96,7 @@ class Country
                     this->soldiers+=regions[i].GetSoldiers();
                 }
             }
-
+            
             friend ostream& operator << (ostream& cout, Country& country){
                 cout<<"Id-ul tarii "<<country.id<<" care are numele "<<country.name<<" populatie:"<<country.population<<" soldati:"<<country.soldiers<<endl;
                 return cout;
