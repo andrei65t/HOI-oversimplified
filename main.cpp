@@ -1,9 +1,13 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include "countries.h"
+#include <vector>
 using namespace std;
+using namespace sf;
 vector<Region> regions;
 vector<Country> countries;
 string names[4]={"Romania","Bulgaria","Serbia","Ungaria"};
+sf::Color colors[4]={sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color::Yellow};
 void initializare(){
     srand(time(0));
     for (int i=0;i<4;i++){
@@ -16,6 +20,36 @@ void initializare(){
 }
 int main() {
     initializare();
+    RenderWindow window(sf::VideoMode(1500, 1000), "Countries");
+    bool mousePressed = false;
+    while(window.isOpen())
+    {
+        Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == Event::Closed)
+                window.close();
+        
+        
+        if(event.type==Event::MouseButtonPressed){
+            if(event.mouseButton.button==Mouse::Left and !mousePressed){
+                mousePressed = true;
+                for (int i=0;i<4;i++){
+                    
+                    cerr<<"apasat";
+                }
+            }
+        }
+        if(event.type==Event::MouseButtonReleased){
+            if(event.mouseButton.button==Mouse::Left and mousePressed){
+                mousePressed = false;
+            }
+        }
+    }
+        window.clear();
+        window.display();
+    }
+    /*
     while(1==1)
     {
         int op;
@@ -53,6 +87,6 @@ int main() {
             break;
         }
     }
-
+*/
     return 0;
 }
