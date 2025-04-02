@@ -33,11 +33,12 @@ class Region : public HexagonShape
         Resources resources;
         HexagonShape hexagon;
     public:
-        Region(int ocupant, Resources resources, HexagonShape hexagon) : HexagonShape(hexagon){
+        Region(int ocupant, Resources resources, HexagonShape hexagon){
             id=ocupant;
             population=rand()%5000+10000;
             soldiers=population/(rand()%17+7);
             this->resources=resources;
+            this->hexagon=hexagon;
         }
         int GetPopulation(){
             return population;
