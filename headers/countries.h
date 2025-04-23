@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "sfmlHex.h"
+#include <sstream>
 using namespace std;
 
 class Resources{
@@ -46,13 +47,26 @@ class Region : public HexagonShape
         int GetSoldiers(){
             return soldiers;
         }
-        void afisareRegiune(){
-            cerr<<"     Id-ul regiunii "<<id<<" populatie:"<<population<<" soldati:"<<soldiers<<endl;
+        string afisareRegiune() const{
+            ostringstream ss;
+            ss << "Id-ul regiunii " << id << " populatie:" << population << " soldati:" << soldiers;
+            return ss.str();
         }
         friend ostream& operator << (ostream& cout, Region& region){
             cout<<"Id-ul tarii "<<region.id<<" populatie:"<<region.population<<" soldati:"<<region.soldiers<<endl;
             return cout;
         }
+        const HexagonShape& getHexShape() const {
+            return hexagon;
+        }
+        bool contains(Vector2f point) const {
+            return hexagon.contains(point);
+        }
+        
+        int GetID() const {
+            return id;
+        }
+        
         
 };
 
@@ -78,7 +92,7 @@ class Country
                 }
                 this->name=name;
             }
-            vector<Region>& GetRegions(){
+            const vector<Region>& GetRegions() const{
                 return regions;
             }
             void Regiuni(int i){
