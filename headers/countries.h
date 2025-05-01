@@ -62,7 +62,9 @@ class Region : public HexagonShape
         bool contains(Vector2f point) const {
             return hexagon.contains(point);
         }
-        
+        void changeOutlineColor(Color color) {
+            hexagon.OutlineColor(color);
+        }
         int GetID() const {
             return id;
         }
@@ -111,10 +113,23 @@ class Country
                     this->soldiers+=regions[i].GetSoldiers();
                 }
             }
-            
+            void outline(Color color){
+                for(int i=0;i<regions.size();i++){
+                    regions[i].changeOutlineColor(color);
+                }
+            }
             friend ostream& operator << (ostream& cout, Country& country){
                 cout<<"Id-ul tarii "<<country.id<<" care are numele "<<country.name<<" populatie:"<<country.population<<" soldati:"<<country.soldiers<<endl;
                 return cout;
+            }
+            void checkDestruction(){
+                if(regions.size()==0){
+                    cerr<<"Tara "<<name<<" a fost distrusa!"<<endl;
+                }
+            }
+            ~Country(){
+                cerr<<"Tara "<<name<<" a fost distrusa!"<<endl;
+                regions.clear();
             }
 };
 
@@ -123,4 +138,5 @@ void transferRegion(Country& tara1, Country& tara2, int id_region){
     tara2.regions.erase(tara2.regions.begin()+id_region);
     tara1.updateInformatii();
     tara2.updateInformatii();
+    tara2.checkDestruction();
 }

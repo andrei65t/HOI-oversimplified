@@ -25,9 +25,8 @@ class HexagonShape : public ConvexShape
         {
             return color;
         }
-        void changeOutlineColor(Color color)
+        void OutlineColor(Color color)
         {
-            outline=color;
             setOutlineColor(color);
         }
         bool contains(Vector2f point) const {

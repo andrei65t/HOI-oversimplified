@@ -22,8 +22,8 @@ void initializare(RenderWindow& window) {
     float hexRadius = 70.f;
     float hexWidth = hexRadius * sqrt(3.f);  // point-to-point horizontal
     float hexHeight = hexRadius * 2.f;       // point-to-point vertical
-    float verticalSpacing = hexHeight * 0.866f;
-    float horizontalSpacing = hexWidth * 0.866f; // add small gap between hexes
+    float verticalSpacing = hexHeight * 0.866f + 4.f;
+    float horizontalSpacing = hexWidth * 0.866f + 3.f; // add small gap between hexes
 
     int cols = 6;
     int rows = 4;
@@ -132,6 +132,7 @@ int main() {
                             currentState = GameState::Playing;
                             infoText.setString("Playing as " + names[selectedCountryId]);
                             cerr << "Selected country: " << names[selectedCountryId] << endl;
+                            countries[selectedCountryId].outline(Color::White);
                         }
                     }
                 }
