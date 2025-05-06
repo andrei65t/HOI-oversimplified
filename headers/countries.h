@@ -15,6 +15,18 @@ class Resources{
             this->wood=wood;
             this->iron=iron;
         }
+        int getIron() const{
+            return iron;
+        }
+        int getGold() const{
+            return gold;
+        }
+        int getStone() const{
+            return stone;
+        }
+        int getWood() const{
+            return wood;
+        }
 };
 class Factory{
     private:
@@ -68,7 +80,9 @@ class Region : public HexagonShape
         int GetID() const {
             return id;
         }
-        
+        const Resources& getResources() const {
+            return resources;
+        }
         
 };
 
@@ -131,6 +145,7 @@ class Country
                 cerr<<"Tara "<<name<<" a fost distrusa!"<<endl;
                 regions.clear();
             }
+            
 };
 
 void transferRegion(Country& tara1, Country& tara2, int id_region){
