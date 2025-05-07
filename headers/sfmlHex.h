@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <cmath>
 using namespace sf;
@@ -30,7 +31,6 @@ class HexagonShape : public ConvexShape
             setOutlineColor(color);
         }
         bool contains(Vector2f point) const {
-            // Transformarea punctului în coordonatele locale ale hexagonului
             Transform transform;
             transform.translate(getPosition());
             Vector2f localPoint = transform.getInverse().transformPoint(point);
