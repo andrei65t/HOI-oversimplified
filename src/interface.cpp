@@ -9,7 +9,7 @@ extern Color colors[4];
 void setupInterface(sf::RenderWindow& window, sf::Font& font,
     sf::RectangleShape& infoPanel, sf::RectangleShape& infoBox, sf::Text& infoText,
     sf::RectangleShape& overlayPanel, sf::Text& overlayTitle, std::vector<sf::Text>& countryButtons,
-    sf::RectangleShape& buildButton, sf::Text& buildText){
+    sf::RectangleShape& buildButton, sf::Text& buildText, sf::RectangleShape& attackButton, sf::Text& attackText) {
 
     infoPanel.setSize(Vector2f(300.f, window.getSize().y));
     infoPanel.setFillColor(Color(20, 20, 20, 230));
@@ -50,7 +50,18 @@ void setupInterface(sf::RenderWindow& window, sf::Font& font,
     buildText.setString("Construieste fabrica");
     buildText.setPosition(buildButton.getPosition().x + 20.f, buildButton.getPosition().y + 5.f);
 
-    
+    attackButton.setSize(Vector2f(280.f, 40.f));
+    attackButton.setFillColor(Color(90, 90, 90));
+    attackButton.setOutlineThickness(2.f);
+    attackButton.setOutlineColor(Color(120, 120, 120));
+    attackButton.setPosition(infoBox.getPosition().x, infoBox.getPosition().y + infoBox.getSize().y + 60.f);
+
+    attackText.setFont(font);
+    attackText.setCharacterSize(18);
+    attackText.setFillColor(Color::White);
+    attackText.setString("Ataca");
+    attackText.setPosition(attackButton.getPosition().x + 90.f, attackButton.getPosition().y + 5.f);
+
     for (int i = 0; i < 4; i++) {
         Text button;
         button.setFont(font);

@@ -19,9 +19,9 @@ void Country::produceResources() {
 
     if (hasFactory) {
         for (auto& region : regions) {
-            if (!region.hasFactoryBuilt()) {
-                region.addResources(2);
-            }
+            //if (!region.hasFactoryBuilt()) {
+            region.addResources(2); // de rezolvat daca aveam peste tot fabrici nu generam resurse
+            //}
         }
     }
 }

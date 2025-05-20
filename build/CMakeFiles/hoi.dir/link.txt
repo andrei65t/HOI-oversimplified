@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/hoi.dir/src/main.cpp.o CMakeFiles/hoi.dir/src/init.cpp.o CMakeFiles/hoi.dir/src/interface.cpp.o CMakeFiles/hoi.dir/src/countries.cpp.o -o /home/pia/Documents/HOI-oversimplified/hoi  /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1

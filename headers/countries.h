@@ -17,6 +17,12 @@ class Resources{
             this->wood=wood;
             this->iron=iron;
         }
+        void setBoost(){
+            gold=200;
+            stone=1000;
+            wood=1000;
+            iron=1000;
+        }
         void adderResouces(int amount){
             gold+=amount;
             stone+=amount;
@@ -84,6 +90,9 @@ class Region : public HexagonShape
             this->resources=resources;
             this->hexagon=hexagon;
             this->hasFactory=false;
+        }
+        void setBoost(){
+            resources.setBoost();
         }
         int GetPopulation(){
             return population;

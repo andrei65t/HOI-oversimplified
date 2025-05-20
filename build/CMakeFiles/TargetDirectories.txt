@@ -1,3 +1,0 @@
-/home/pia/Documents/HOI-oversimplified/build/CMakeFiles/hoi.dir
-/home/pia/Documents/HOI-oversimplified/build/CMakeFiles/edit_cache.dir
-/home/pia/Documents/HOI-oversimplified/build/CMakeFiles/rebuild_cache.dir
