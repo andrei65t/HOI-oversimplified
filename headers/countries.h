@@ -81,6 +81,7 @@ class Region : public HexagonShape
         bool hasFactory;
         bool playable;
         Factory* factory=nullptr;
+        int tanks;
     public:
         Region(int ocupant, Resources resources, HexagonShape hexagon, bool playable=false){
             this->playable=playable;
@@ -97,7 +98,7 @@ class Region : public HexagonShape
         int GetPopulation(){
             return population;
         }
-        int GetSoldiers(){
+        int GetSoldiers() const {
             return soldiers;
         }
         void setPlayable(bool value) {
@@ -110,7 +111,15 @@ class Region : public HexagonShape
             if (!playable)
                 throw AccessDeniedException("Nu ai voie să accesezi această regiune!");
         }
-        
+        Color getColor() const {
+            return hexagon.getFillColor();
+        }
+        void changeColor(Color color) {
+            hexagon.setFillColor(color);
+        }
+        int GetTanks() const { return tanks; }
+        void addSoldiers(int delta) { soldiers += delta; }
+        void addTanks(int delta) { tanks += delta; }
         string afisareRegiune() const{
             ostringstream ss;
             ss << "Id-ul regiunii " << id << " populatie:" << population << " soldati:" << soldiers;
@@ -181,10 +190,15 @@ class Country
                 regions[i].afisareRegiune();
             }
             int getSoldati(){
-                return soldiers;
+                int total = 0;                               
+                for (const auto& r : regions)               
+                    total += r.GetSoldiers();                
+                return total;                                
             }
-            friend void transferRegion(Country& tara1, Country& tara2, int id_region);
-            
+            friend void transferRegion(Country& tara1, Country& tara2, Region* regionPtr);
+            const Resources& getResources() const {
+                return resources;
+            }
             void updateInformatii(){
                 this->population=0;
                 this->soldiers=0;
@@ -227,7 +241,6 @@ class Country
             std::vector<Region>& GetRegions() {
                 return regions;
             }
-            
             void produceResources();
 
             ~Country(){

@@ -1,11 +1,30 @@
 #include "../headers/countries.h"
 
-void transferRegion(Country& tara1, Country& tara2, int id_region) {
-    tara1.regions.push_back(tara2.regions[id_region]);
-    tara2.regions.erase(tara2.regions.begin() + id_region);
-    tara1.updateInformatii();
-    tara2.updateInformatii();
-    tara2.checkDestruction();
+void transferRegion(Country& winner, Country& loser, Region* regionPtr)
+{
+    if (!regionPtr) return; 
+
+    auto it = std::find_if(loser.GetRegions().begin(),
+                           loser.GetRegions().end(),
+                           [&](const Region& r){ return &r == regionPtr; });
+
+    if (it == loser.GetRegions().end()) return;    
+
+
+    Region moved = std::move(*it);
+    loser.GetRegions().erase(it);
+
+    
+    moved.setPlayable(true);                       
+    moved.changeOutlineColor(sf::Color::White);    
+    moved.changeColor(winner.GetRegions().front().getColor()); 
+
+
+    winner.GetRegions().push_back(std::move(moved));
+
+    winner.updateInformatii();
+    loser.updateInformatii();
+    loser.checkDestruction();
 }
 
 void Country::produceResources() {
