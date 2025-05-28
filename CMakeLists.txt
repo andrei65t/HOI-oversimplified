@@ -12,6 +12,7 @@ add_executable(hoi
     src/init.cpp
     src/interface.cpp
     src/countries.cpp
+    src/button.cpp
 )
 
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)

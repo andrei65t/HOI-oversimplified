@@ -3,50 +3,11 @@
 #include "../headers/init.h"
 #include "../headers/interface.h"
 #include "../headers/units.h"
+#include "../headers/button.h"
 #include <iostream>
 #include <vector>
 #include <sstream>
 
-class Button {
-    sf::RectangleShape rect;
-    sf::Text           label;
-    std::function<void()> callback;
-
-public:
-   
-    Button(const sf::Vector2f& pos,
-           const std::string&  text,
-           const sf::Font&     font,
-           std::function<void()> cb,
-           const sf::Vector2f& size = {200.f, 50.f})
-        : callback(std::move(cb))
-    {
-        rect.setSize(size);
-        rect.setPosition(pos);
-        rect.setFillColor({80, 80, 80});
-
-        label.setString(text);
-        label.setFont(font);
-        label.setCharacterSize(22);
-       
-        sf::FloatRect t = label.getLocalBounds();
-        label.setOrigin(t.left + t.width/2, t.top + t.height/2);
-        label.setPosition(pos + size/2.f);
-    }
-
-    void draw(sf::RenderWindow& w) const {
-        w.draw(rect);
-        w.draw(label);
-    }
-    bool isClicked(sf::Vector2f mPos) const {
-        return rect.getGlobalBounds().contains(mPos);
-    }
-    void trigger() const { if (callback) callback(); }
-
-   
-    void setFillColor(sf::Color c)       { rect.setFillColor(c); }
-    void setCallback(std::function<void()> cb) { callback = std::move(cb); }
-};
 
 std::vector<Button> battleButtons;
 Army playerArmy, enemyArmy;
