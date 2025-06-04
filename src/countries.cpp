@@ -15,8 +15,14 @@ void transferRegion(Country& winner, Country& loser, Region* regionPtr)
     loser.GetRegions().erase(it);
 
     
-    moved.setPlayable(true);                       
-    moved.changeOutlineColor(sf::Color::White);    
+    if (winner.isMyCountry()) {
+        moved.setPlayable(true);
+        moved.changeOutlineColor(sf::Color::White);   
+    } 
+    if (loser.isMyCountry()) {
+        moved.setPlayable(false);
+        moved.changeOutlineColor(sf::Color::Black); 
+    }
     moved.changeColor(winner.GetRegions().front().getColor()); 
 
 
@@ -35,11 +41,13 @@ void Country::produceResources() {
             break;
         }
     }
-
+    int r=2;
+    if (getLabour()==true)
+        r=20;
     if (hasFactory) {
         for (auto& region : regions) {
             //if (!region.hasFactoryBuilt()) {
-            region.addResources(2); // de rezolvat daca aveam peste tot fabrici nu generam resurse
+            region.addResources(r); // de rezolvat daca aveam peste tot fabrici nu generam resurse
             //}
         }
     }

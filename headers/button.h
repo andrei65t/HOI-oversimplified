@@ -6,12 +6,12 @@
 
 class Button {
     sf::RectangleShape rect;
-    sf::Text           label;
+    sf::Text label;
     std::function<void()> callback;
 public:
     Button(const sf::Vector2f& pos,
-           const std::string&  text,
-           const sf::Font&     font,
+           const std::string& text,
+           const sf::Font& font,
            std::function<void()> callback,
            const sf::Vector2f& size = {200.f, 50.f});
 
@@ -21,7 +21,11 @@ public:
 
     void setFillColor(sf::Color color);
     void setCallback(std::function<void()> callback);
+    
+    void setOutlineColor(const sf::Color& color);
+    void setOutlineThickness(float thickness);
+    void setTextColor(const sf::Color& color);
 
 };
 
-#endif // BUTTON_H
+#endif 

@@ -14,6 +14,11 @@ Button::Button(const sf::Vector2f& pos,
     label.setString(text);
     label.setFont(font);
     label.setCharacterSize(22);
+    label.setFillColor(sf::Color::Black);
+
+    rect.setOutlineThickness(0.f);
+    rect.setOutlineColor(sf::Color::Transparent);
+
     
     sf::FloatRect bounds = label.getLocalBounds();
     label.setOrigin(bounds.left + bounds.width/2.f,
@@ -40,4 +45,16 @@ void Button::setFillColor(sf::Color color) {
 
 void Button::setCallback(std::function<void()> callback) {
     callback = std::move(callback);
+}
+
+void Button::setOutlineColor(const sf::Color& color) {
+    rect.setOutlineColor(color);
+}
+
+void Button::setOutlineThickness(float thickness) {
+    rect.setOutlineThickness(thickness);
+}
+
+void Button::setTextColor(const sf::Color& color) {
+    label.setFillColor(color);
 }

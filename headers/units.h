@@ -37,7 +37,7 @@ class AbstractUnit {
 class SoldierTraits {
     public:
         static std::string name() { 
-            return "Soldier"; 
+            return "Infanterie"; 
         }
         static int attack() { 
             return 5; 
@@ -46,30 +46,30 @@ class SoldierTraits {
             return 3; 
         }
         static Resources cost(int n) { 
-            return Resources(10*n, 0, 0, 5*n); 
+            return Resources(100*n, 0, 0, 50*n); 
         }
     };
     
 class ArmoredSoldierTraits {
 public:
     static std::string name() { 
-        return "Armored Soldier"; 
+        return "Artilerie"; 
     }
     static int attack() { 
         return 7; 
     }
     static int defense() { 
-        return 7; 
+        return 8; 
     }
     static Resources cost(int n) {
-        return Resources(15*n, 0, 0, 12*n); 
+        return Resources(100*n, 60*n, 0, 50*n); 
     }
 };
 
 class TankTraits {
 public:
     static std::string name() { 
-        return "Tank"; 
+        return "Tanc"; 
     }
     static int attack() { 
         return 20; 
@@ -78,7 +78,7 @@ public:
         return 15; 
     }
     static Resources cost(int n) {
-        return Resources(50*n, 0, 0, 30*n); 
+        return Resources(200*n, 0, 30*n, 200*n); 
         }
 };
 
@@ -167,6 +167,12 @@ class ClassicBattleStrategy : public BattleStrategy {
         std::string decide(const Army& attacker, const Army& defender) override {
             int attackerStrength = attacker.totalAttackStrength();
             int defenderStrength = defender.totalDefenseStrength();
+            std::cerr << "[DEBUG] ClassicBattleStrategy: ATK=" 
+                  << attackerStrength 
+                  << "  DEF=" 
+                  << defenderStrength 
+                  << "\n";
+
             if (attackerStrength > defenderStrength) {
                 return "Attacker wins!";
             } else {
@@ -181,13 +187,21 @@ class RandomizedStrategy : public BattleStrategy {
             int defenderStrength = defender.totalDefenseStrength();
             int totalStrength = attackerStrength + defenderStrength;
 
-            if (totalStrength == 0) {
-                return "Draw! (Random)";
-            }
-
+            std::cerr << "[DEBUG] RandomizedStrategy: ATK=" 
+                  << attackerStrength 
+                  << "  DEF=" 
+                  << defenderStrength 
+                  << "  TOTAL=" 
+                  << totalStrength 
+                  << "\n";
             double probability = static_cast<double>(attackerStrength) / totalStrength;
             double randomValue = static_cast<double>(rand()) / RAND_MAX;
-
+            std::cerr << "[DEBUG] RandomizedStrategy: Probability=" 
+                  << probability 
+                  << "  RandomValue="
+                    << randomValue
+                    << "\n";
+                    
             if (randomValue < probability) {
                 return "Attackers Win! (Random)";
             } else {

@@ -5,6 +5,7 @@
 #include <iostream>
 #include "sfmlHex.h"
 #include "exceptions.h"
+#include "popularity.h"
 #include <sstream>
 using namespace std;
 
@@ -82,6 +83,7 @@ class Region : public HexagonShape
         bool playable;
         Factory* factory=nullptr;
         int tanks;
+        
     public:
         Region(int ocupant, Resources resources, HexagonShape hexagon, bool playable=false){
             this->playable=playable;
@@ -91,6 +93,7 @@ class Region : public HexagonShape
             this->resources=resources;
             this->hexagon=hexagon;
             this->hasFactory=false;
+            tanks=rand()%2;
         }
         void setBoost(){
             resources.setBoost();
@@ -117,6 +120,7 @@ class Region : public HexagonShape
         void changeColor(Color color) {
             hexagon.setFillColor(color);
         }
+
         int GetTanks() const { return tanks; }
         void addSoldiers(int delta) { soldiers += delta; }
         void addTanks(int delta) { tanks += delta; }
@@ -158,6 +162,16 @@ class Region : public HexagonShape
         void addResources(int amount) {
             resources.adderResouces(amount);
         }
+        void consumeResources(int ironUsed, int woodUsed, int goldUsed, int stoneUsed) {
+            if(ironUsed <= resources.getIron() &&
+               woodUsed <= resources.getWood() &&
+               goldUsed <= resources.getGold() &&
+               stoneUsed <= resources.getStone()) {
+                resources.consume(ironUsed, woodUsed, goldUsed, stoneUsed);
+            } else {
+                throw std::runtime_error("Resurse insuficiente pentru consum.");
+            }
+        }
         
 };
 
@@ -167,9 +181,11 @@ class Country
         string name;
         int population,soldiers;
         int id;
+        bool pc;
+        bool labour;
         Resources resources;
         vector<Region> regions;
-
+        Popularity<int> popularity;
 
         public:
             Country(int id, string name, vector<Region> regions){
@@ -182,12 +198,27 @@ class Country
                     this->soldiers+=regions[i].GetSoldiers();
                 }
                 this->name=name;
+                popularity = Popularity<int>();
+                pc=false;
+                labour=false;
+            }
+            void setPc(bool pc){
+                this->pc=pc;
             }
             const vector<Region>& GetRegions() const{
                 return regions;
             }
+            bool isMyCountry() const {
+                return pc;
+            }
             void Regiuni(int i){
                 regions[i].afisareRegiune();
+            }
+            void setlabour(bool value) {
+                labour = value;
+            }
+            int getLabour() const {
+                return labour;
             }
             int getSoldati(){
                 int total = 0;                               
@@ -237,11 +268,94 @@ class Country
             
                 throw std::runtime_error("Regiune invalidă.");
             }
-            
+            Popularity<int>& getPopularity() {
+                return popularity;
+            }
+            const Popularity<int>& getPopularity() const {
+                return popularity;
+            }
+            void increasePopularity(int amount) {
+                popularity.increase(amount);
+            }
+            void decreasePopularity(int amount) {
+                popularity.decrease(amount);
+                cerr<< "Popularitate scazuta pentru tara " << name << ": " << amount << endl;
+            }
             std::vector<Region>& GetRegions() {
                 return regions;
             }
             void produceResources();
+            // countries.h (în clasa Country, după celelalte metode)
+            Resources getTotalResources() const {
+                Resources total{0, 0, 0, 0};
+                for (const auto& r : regions) {
+                    const Resources& rRes = r.getResources();
+                    // Observă ordinea parametrilor din constructorul Resources:
+                    // Resources(int gold, int stone, int wood, int iron);
+                    total = Resources{
+                        total.getGold()  + rRes.getGold(),   // gold
+                        total.getStone() + rRes.getStone(),  // stone
+                        total.getWood()  + rRes.getWood(),   // wood
+                        total.getIron()  + rRes.getIron()    // iron
+                    };
+                }
+                return total;
+            }
+            
+
+    /// Scade din resursele tuturor regiunilor costul dat,
+    /// împărţind suma echilibrat pe fiecare regiune.
+    void consumeResourcesFromRegions(const Resources& cost) {
+        // 1) Verificăm totalul resurselor disponibile în toate regiunile
+        Resources total{0, 0, 0, 0};
+        for (const auto& r : regions) {
+            const Resources& rRes = r.getResources();
+            total = Resources{
+                total.getGold()  + rRes.getGold(),
+                total.getStone() + rRes.getStone(),
+                total.getWood()  + rRes.getWood(),
+                total.getIron()  + rRes.getIron()
+            };
+        }
+        if (total.getIron()  < cost.getIron()  ||
+            total.getWood()  < cost.getWood()  ||
+            total.getGold()  < cost.getGold()  ||
+            total.getStone() < cost.getStone())
+        {
+            throw std::runtime_error("Resurse insuficiente în toate regiunile combinate!");
+        }
+
+        
+        int totalRegions = regions.size();
+        int remIron  = cost.getIron();
+        int remWood  = cost.getWood();
+        int remGold  = cost.getGold();
+        int remStone = cost.getStone();
+
+        for (auto& r : regions) {
+            const Resources& rRes = r.getResources();
+
+            
+            int takeIron  = std::min(rRes.getIron(), remIron / totalRegions);
+            int takeWood  = std::min(rRes.getWood(), remWood / totalRegions);
+            int takeGold  = std::min(rRes.getGold(), remGold / totalRegions);
+            int takeStone = std::min(rRes.getStone(), remStone / totalRegions);
+
+            r.consumeResources(takeIron, takeWood, takeGold, takeStone);
+
+            remIron  -= takeIron;
+            remWood  -= takeWood;
+            remGold  -= takeGold;
+            remStone -= takeStone;
+
+            totalRegions--; 
+
+           
+            if (remIron == 0 && remWood == 0 && remGold == 0 && remStone == 0) {
+                break;
+            }
+        }
+    }
 
             ~Country(){
                 cerr<<"Tara "<<name<<" a fost distrusa!"<<endl;

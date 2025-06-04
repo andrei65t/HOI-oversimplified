@@ -9,7 +9,8 @@ extern Color colors[4];
 void setupInterface(sf::RenderWindow& window, sf::Font& font,
     sf::RectangleShape& infoPanel, sf::RectangleShape& infoBox, sf::Text& infoText,
     sf::RectangleShape& overlayPanel, sf::Text& overlayTitle, std::vector<sf::Text>& countryButtons,
-    sf::RectangleShape& buildButton, sf::Text& buildText, sf::RectangleShape& attackButton, sf::Text& attackText) {
+    sf::RectangleShape& buildButton, sf::Text& buildText, sf::RectangleShape& attackButton, sf::Text& attackText,
+    sf::RectangleShape& labourButton,sf::Text& labourText) {
 
     infoPanel.setSize(Vector2f(300.f, window.getSize().y));
     infoPanel.setFillColor(Color(20, 20, 20, 230));
@@ -61,6 +62,22 @@ void setupInterface(sf::RenderWindow& window, sf::Font& font,
     attackText.setFillColor(Color::White);
     attackText.setString("Ataca");
     attackText.setPosition(attackButton.getPosition().x + 90.f, attackButton.getPosition().y + 5.f);
+    
+    labourButton.setSize(sf::Vector2f(200.f, 40.f));
+
+    labourButton.setPosition(window.getSize().x - labourButton.getSize().x - 50.f, window.getSize().y - 100.f);
+    labourButton.setFillColor(sf::Color::Red);
+    labourButton.setOutlineColor(sf::Color::Black);
+    labourButton.setOutlineThickness(2.f);
+
+    labourText.setFont(font);
+    labourText.setCharacterSize(18);
+    labourText.setFillColor(sf::Color::White);
+    labourText.setString("Labour OFF");
+    labourText.setPosition(
+        window.getSize().x - labourButton.getSize().x - 50.f + 15.f,
+        labourButton.getPosition().y + 8.f
+    );
 
     for (int i = 0; i < 4; i++) {
         Text button;
